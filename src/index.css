@@ -1,0 +1,49 @@
+/* Team Hub — pink + gray theme */
+:root {
+  /* Pink accents */
+  --pink: #d6336c;
+  --pink-deep: #a61e4d;
+  --pink-soft: #fdf2f7;
+  --pink-line: #f7d4e3;
+
+  /* Grays */
+  --gray-900: #212529;
+  --gray-600: #5f6368;
+  --gray-200: #e6e8eb;
+  --gray-100: #f1f3f5;
+  --gray-050: #fafafa;
+
+  --card-bg: #ffffff;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  font: 16px/1.5 var(--sans);
+  color: var(--gray-600);
+  background: var(--gray-050);
+  color-scheme: light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+p {
+  margin: 0;
+}
