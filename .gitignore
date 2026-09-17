@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Backend runtime data (SQLite)
+server/data
+*.db-journal
+*.db-wal
+*.db-shm
