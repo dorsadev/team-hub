@@ -26,9 +26,16 @@ db.exec(`
     username TEXT NOT NULL UNIQUE,
     display_name TEXT NOT NULL,
     password_salt TEXT NOT NULL,
-    password_hash TEXT NOT NULL
+    password_hash TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'student'
   )
 `)
+
+// Older databases predate roles — add the column without losing data.
+const userColumns = db.prepare('PRAGMA table_info(users)').all()
+if (!userColumns.some((column) => column.name === 'role')) {
+  db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'student'")
+}
 
 if (!db.prepare('SELECT id FROM users WHERE username = ?').get('dorsadev')) {
   const password = process.env.SEED_USER_PASSWORD
@@ -44,6 +51,9 @@ if (!db.prepare('SELECT id FROM users WHERE username = ?').get('dorsadev')) {
   `).run('dorsadev', 'Dorsa', salt, hash)
 }
 
+// The hub owner (the teacher) stays in charge: dorsadev is always admin.
+db.prepare("UPDATE users SET role = 'admin' WHERE username = 'dorsadev'").run()
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS branches (
     id INTEGER PRIMARY KEY,
@@ -57,6 +67,24 @@ db.exec(`
 db.exec(`
   CREATE UNIQUE INDEX IF NOT EXISTS branches_owner_name_idx
   ON branches (owner_user_id, name)
+`)
+
+// Files live inside a branch; deleting a branch removes its files.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS files (
+    id INTEGER PRIMARY KEY,
+    branch_id INTEGER NOT NULL REFERENCES branches(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+  )
+`)
+
+// File names are unique within a branch, like branch names within an owner.
+db.exec(`
+  CREATE UNIQUE INDEX IF NOT EXISTS files_branch_name_idx
+  ON files (branch_id, name)
 `)
 
 // Every user starts with a "main" branch (matches the previous UI default).

@@ -1,15 +1,24 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
 import './App.css'
 import { createBranch as createBranchApi, fetchBranches, fetchCurrentUser, logout, type User } from './api'
+import AdminDashboard from './AdminDashboard'
 import Login from './Login'
+import Signup from './Signup'
+
+type AuthView = 'login' | 'signup'
+
+// The activity feed is personalized with the signed-in user's own name.
+function userActivities(user: User): string[] {
+  return [
+    `${user.displayName} created branch “main”`,
+    `${user.displayName} opened the workspace`,
+  ]
+}
 
 function App() {
   const [branches, setBranches] = useState<string[]>([])
   const [activeBranch, setActiveBranch] = useState('main')
-  const [activities, setActivities] = useState([
-    'Dorsa created branch “main”',
-    'Dorsa opened the workspace',
-  ])
+  const [activities, setActivities] = useState<string[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false)
   const [branchName, setBranchName] = useState('')
@@ -17,11 +26,16 @@ function App() {
   const [user, setUser] = useState<User | null>(null)
   const [isCheckingSession, setIsCheckingSession] = useState(true)
   const [isCreatingBranch, setIsCreatingBranch] = useState(false)
+  const [authView, setAuthView] = useState<AuthView>('login')
+  const [signupUsername, setSignupUsername] = useState('')
 
   // Page load: ask the backend who we are (GET /api/me sends the session cookie).
   useEffect(() => {
     fetchCurrentUser().then((currentUser) => {
-      setUser(currentUser)
+      if (currentUser) {
+        setUser(currentUser)
+        setActivities(userActivities(currentUser))
+      }
       setIsCheckingSession(false)
     })
   }, [])
@@ -46,6 +60,7 @@ function App() {
 
   const handleLoggedIn = (loggedInUser: User) => {
     setUser(loggedInUser)
+    setActivities(userActivities(loggedInUser))
   }
 
   // POST /api/logout clears the session cookie server-side.
@@ -96,7 +111,10 @@ function App() {
     createBranchApi(name)
       .then((createdName) => {
         setBranches([...branches, createdName])
-        setActivities([`Dorsa created branch “${createdName}”`, ...activities])
+        setActivities([
+          `${user?.displayName ?? 'You'} created branch “${createdName}”`,
+          ...activities,
+        ])
         closeModal()
       })
       .catch((err: unknown) => {
@@ -123,9 +141,27 @@ function App() {
     return <p className="auth-loading">Checking your session…</p>
   }
 
-  // Unauthenticated visitors get the login screen.
+  // Unauthenticated visitors get the login or signup screen.
   if (!user) {
-    return <Login onLoggedIn={handleLoggedIn} />
+    return authView === 'signup' ? (
+      <Signup
+        onRegistered={(registeredUsername) => {
+          setSignupUsername(registeredUsername)
+        }}
+        onSwitchToLogin={() => setAuthView('login')}
+      />
+    ) : (
+      <Login
+        initialUsername={signupUsername}
+        onLoggedIn={handleLoggedIn}
+        onSwitchToSignup={() => setAuthView('signup')}
+      />
+    )
+  }
+
+  // Admins get the member overview; students get their personal workspace.
+  if (user.role === 'admin') {
+    return <AdminDashboard user={user} onLogout={handleLogout} />
   }
 
   const stats = [
@@ -286,7 +322,7 @@ function App() {
             <dl className="workspace-details">
               <div className="workspace-row">
                 <dt className="workspace-label">Owner</dt>
-                <dd className="workspace-value">Dorsa</dd>
+                <dd className="workspace-value">{user.displayName}</dd>
               </div>
               <div className="workspace-row">
                 <dt className="workspace-label">Status</dt>

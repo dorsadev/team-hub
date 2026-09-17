@@ -557,3 +557,369 @@
   opacity: 0.7;
   cursor: default;
 }
+
+/* Login ↔ Signup switcher */
+.login-switch {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+.login-switch button {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--pink-deep);
+  cursor: pointer;
+}
+
+.login-switch button:hover {
+  text-decoration: underline;
+}
+
+.login-switch button:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+
+/* Admin Dashboard */
+.admin-list {
+  margin-top: 4px;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.admin-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.admin-user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-900);
+}
+
+.admin-user-username {
+  font-size: 13px;
+  color: var(--gray-600);
+}
+
+.admin-role {
+  flex: none;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+.admin-role-admin {
+  background: var(--pink-soft);
+  color: var(--pink-deep);
+  border: 1px solid var(--pink-line);
+}
+
+.admin-role-student {
+  background: var(--card-bg);
+  color: var(--gray-600);
+  border: 1px solid var(--gray-200);
+}
+
+@media (max-width: 640px) {
+  .admin-user {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-user-click {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Clickable student rows on the admin dashboard */
+.admin-user-click {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  padding: 0;
+  color: inherit;
+}
+
+button.admin-user-click {
+  cursor: pointer;
+}
+
+button.admin-user-click:hover {
+  background: var(--gray-200);
+}
+
+.admin-user-selected {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+
+/* Panel shown below the list for the clicked student */
+.admin-selected {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--gray-900);
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.admin-selected-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.admin-selected-status {
+  margin: 6px 0 0;
+  color: var(--gray-600);
+}
+
+.admin-selected-error {
+  color: var(--pink-deep);
+}
+
+.admin-selected-branch-list {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--gray-900);
+}
+
+/* Clickable branch rows inside the selected-user panel */
+.admin-branch-click {
+  font: inherit;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+button.admin-branch-click {
+  cursor: pointer;
+}
+
+button.admin-branch-click:hover {
+  text-decoration: underline;
+}
+
+.admin-branch-selected {
+  font-weight: 600;
+  color: var(--pink-deep);
+}
+
+/* Panel below the branch list for the clicked branch */
+.admin-selected-branch {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--gray-900);
+  background: var(--card-bg);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.admin-selected-branch-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Workspace section inside the selected-branch panel */
+.admin-workspace {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--gray-200);
+}
+
+.admin-workspace-title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-600);
+}
+
+.admin-workspace-branch {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--gray-900);
+}
+
+.admin-workspace-files {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--gray-900);
+}
+
+.admin-workspace-status {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--gray-600);
+}
+
+.admin-workspace-error {
+  color: var(--pink-deep);
+}
+
+.admin-workspace-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-workspace-head .admin-new-file-btn {
+  padding: 3px 10px;
+  font-size: 12px;
+}
+
+/* New File form inside the workspace section */
+.admin-file-form {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-file-label {
+  font-size: 12px;
+  color: var(--gray-600);
+}
+
+.admin-file-input {
+  font: inherit;
+  font-size: 13px;
+  color: var(--gray-900);
+  background: var(--gray-050);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+.admin-file-input:focus {
+  border-color: var(--pink);
+  outline: 2px solid var(--pink-line);
+  outline-offset: 1px;
+}
+
+.admin-file-textarea {
+  min-height: 64px;
+  resize: vertical;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.admin-file-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.admin-file-actions .action {
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+/* Clickable file rows inside the workspace */
+.admin-file-click {
+  font: inherit;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+button.admin-file-click {
+  cursor: pointer;
+}
+
+button.admin-file-click:hover {
+  text-decoration: underline;
+}
+
+.admin-file-selected {
+  font-weight: 600;
+  color: var(--pink-deep);
+}
+
+/* File editor below the file list */
+.admin-file-editor {
+  margin-top: 8px;
+  padding: 8px;
+  background: var(--gray-050);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+}
+
+.admin-file-editor-title {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-600);
+}
+
+.admin-file-editor .admin-file-form {
+  margin-top: 0;
+}
+
+/* Signup role checkbox */
+.signup-role {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.signup-role input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--pink-deep);
+  cursor: pointer;
+}
+
+.signup-role label {
+  font-size: 14px;
+  color: var(--gray-600);
+  cursor: pointer;
+  user-select: none;
+}

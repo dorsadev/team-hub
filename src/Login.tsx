@@ -3,10 +3,12 @@ import { login, type User } from './api'
 
 type LoginProps = {
   onLoggedIn: (user: User) => void
+  onSwitchToSignup: () => void
+  initialUsername?: string
 }
 
-function Login({ onLoggedIn }: LoginProps) {
-  const [username, setUsername] = useState('')
+function Login({ onLoggedIn, onSwitchToSignup, initialUsername = '' }: LoginProps) {
+  const [username, setUsername] = useState(initialUsername)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -84,6 +86,13 @@ function Login({ onLoggedIn }: LoginProps) {
             </button>
           </div>
         </form>
+
+        <p className="login-switch">
+          New to Team Hub?{' '}
+          <button type="button" onClick={onSwitchToSignup}>
+            Create an account
+          </button>
+        </p>
       </section>
     </div>
   )
